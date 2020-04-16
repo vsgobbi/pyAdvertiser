@@ -31,6 +31,12 @@ $ pip install -r requirements
 ```
 $ npm install -g serverless
 ```
+
+### Check serverless.yml file (choose AWS region to 'us-east-2', runtime to 'python3.7', service name pyAdvertiser):
+```
+$ nano serverless.yml
+```
+
 ### Install serverless plugins:
 ```
 $ sls plugin install -n serverless-wsgi
