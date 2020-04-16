@@ -1,4 +1,4 @@
-## Flask RESTful API with PynamoDB and AWS Lambda
+##Python Web Advertiser: A Flask RESTful API with PynamoDB and AWS Lambda
 
 ## Description
 Web project development of an API using Flask, designed with Blueprints pattern, 
@@ -93,7 +93,10 @@ $ npm run serve
     - 🍴 Fork this repo!
 
 - **Step 2**
-    - 🔨🔨 Clone this repo to your local machine using `https://github.com/vsgobbi/pyAdvertiser`
+    - 🔨🔨 Clone this repo to your local machine using:
+```
+git clone https://github.com/vsgobbi/pyAdvertiser
+```
 
 - **Step 3**
     - 🔃 Create a new pull request using 
