@@ -7,35 +7,29 @@ advertisement = Blueprint("advertisement", __name__)
 
 @advertisement.route("/api/v1/advertisement", methods=["GET"])
 def get():
-    cdbRate = request.json["cdbRate"]
-    investmentDate = request.json["investmentDate"]
-    currentDate = request.json["currentDate"]
+    creationDate = request.args.get["creationDate"]
+    title = request.args.get("title")
+    tags = request.args.get("tags")
+    price = request.args.get("price")
 
-    if not cdbRate:
-        return ApiResponses.badRequestMessage("missing cdbRate parameter")
+    if not title:
+        return ApiResponses.badRequestMessage("missing title parameter")
 
-    if cdbRate and not isinstance(cdbRate, float):
-        return ApiResponses.badRequestMessage("invalid data type of cdbRate parameter, ex: 103.5 must be integer")
+    if price and not isinstance(price, float):
+        return ApiResponses.badRequestMessage("invalid data type of price parameter, ex: 103.5 must be integer")
 
-    if not investmentDate:
-        return ApiResponses.badRequestMessage("missing investmentDate parameter")
+    if not creationDate:
+        return ApiResponses.badRequestMessage("missing creationDate parameter")
 
-    if not currentDate:
-        return ApiResponses.badRequestMessage("missing currentDate parameter")
+    if creationDate and not ApiValidators.isDateISO8601(creationDate):
+        return ApiResponses.badRequestMessage("invalid format of creationDate parameter, ex: 2016-11-14")
 
-    if investmentDate and not ApiValidators.isDateISO8601(investmentDate):
-        return ApiResponses.badRequestMessage("invalid format of investmentDate parameter, ex: 2016-11-14")
-
-    if currentDate and not ApiValidators.isDateISO8601(currentDate):
-        return ApiResponses.badRequestMessage("invalid format of currentDate parameter, ex: 2016-12-26")
-
-    investmentDate = ApiValidators.formattedDate(investmentDate)
-    currentDate = ApiValidators.formattedDate(currentDate)
+    creationDate = ApiValidators.formattedDate(creationDate)
 
     return ApiResponses.successMessage(item="caculatedValues")
 
 
-@advertisement.route("/api/v1/advertisement", methodos=["POST"])
+@advertisement.route("/api/v1/advertisement", methods=["POST"])
 def post():
     title = request.json["title"]
     description = request.json["desciption"]
