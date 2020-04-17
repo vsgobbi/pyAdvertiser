@@ -3,6 +3,9 @@
 __pycache__/*
 *.pyc
 
+# Local configs
+utils/configs.py
+
 # Local env files
 .env.local
 .env.*.local
