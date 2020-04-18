@@ -1,13 +1,15 @@
 from pynamodb.models import Model
 from pynamodb.attributes import UTCDateTimeAttribute, UnicodeAttribute
 from datetime import datetime
+from utils.configs import region
 
 
 class Advertiser(Model):
 
     class Meta:
-        table_name = "advertiser"
-        region = "us-east-2"
+        table_name = "atnap_advertiser"
+        region = region
+
     created = UTCDateTimeAttribute(null=False, default=datetime.now())
     updated = UTCDateTimeAttribute(null=True)
     fullName = UnicodeAttribute(null=False)
