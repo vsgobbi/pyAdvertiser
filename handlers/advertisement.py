@@ -63,6 +63,7 @@ def post():
     except:
         return ApiResponses.badRequestMessage("Erro ao criar anúncio!")
 
+
 @advertisement.route("/api/v1/advertisement", methods=["PATCH"])
 def patch():
     queryStringDtDate = request.args.get("date")
