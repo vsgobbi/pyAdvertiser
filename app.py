@@ -17,17 +17,20 @@ login_manager.init_app(app)
 @app.route("/", methods=["GET"])
 def home():
     return ApiResponses.successMessage(
-        "message",
-        "Our API is working!"
+        item="Bem-vindo(a) ao portal ATNAP"
     )
 
 
 @app.route("/api/v1", methods=["GET"])
 def get():
     return ApiResponses.successMessage(
-        "message",
-        "API v1 working!"
+        item="Bem-vindo(a) a API v1 da ATNAP!"
     )
+
+
+@app.route("/api/v1", methods=["POST"])
+def post():
+    return ApiResponses.badRequestMessage("Rota inválida")
 
 
 if __name__ == "__main__":
