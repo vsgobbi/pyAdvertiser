@@ -3,6 +3,7 @@
 ## Description
 Web project development of an API using Flask, designed with Blueprints pattern, 
 database created with NoSQL DynamoDB as PynamoDB (https://github.com/pynamodb/PynamoDB).
+Using AWS KMS service to encrypt hashed passwords and secure login system.
 In order to deploy at Amazon Web Services for Lambda with Python 3.7 environment we use Serverless framework.
 Using Serverless framework to deploy on localhost and deploying it to AWS Lambda as well. 
 Used NodeJS Axios to access created API routes with front end client requests.
