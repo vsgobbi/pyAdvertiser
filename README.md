@@ -13,6 +13,7 @@ This project is ***GPL v3.0 licensed***.
 
 
 - [Install it](#install)
+- [Endpoints](#current-endpoints-get-post-patch-delete-)
 - [Running application](#running)
 - [Contributing](#contributing)
 - [License](#license)
@@ -57,7 +58,7 @@ $ sls deploy
 ```
 $ sls logs -f app
 ```
-### Current REST endpoints [GET, POST, PATCH DELETE] :
+### Current endpoints [GET, POST, PATCH DELETE] :
 ### User registration:
 ```
 $ /api/v1/register
