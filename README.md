@@ -58,7 +58,7 @@ $ sls deploy
 ```
 $ sls logs -f app
 ```
-### Current endpoints [GET, POST, PATCH DELETE] :
+### Current endpoints [GET, POST, PATCH, DELETE...] :
 ### User registration:
 ```
 $ /api/v1/register
