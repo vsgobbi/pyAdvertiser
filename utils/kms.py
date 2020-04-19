@@ -13,4 +13,3 @@ class ApiKms(object):
     def decrypt(cls, encodedCipher):
         plainPassword = kmsClient.decrypt(CiphertextBlob=bytes(b64decode(encodedCipher)))
         return plainPassword["Plaintext"].decode()
-
