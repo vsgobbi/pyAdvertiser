@@ -6,7 +6,7 @@ from utils.configs import region
 from utils.kms import ApiKms
 
 
-class Advertiser(Model):
+class User(Model):
 
     class Meta:
         table_name = "atnap_user"
@@ -16,47 +16,47 @@ class Advertiser(Model):
     email = UnicodeAttribute(null=False, range_key=True)
     phoneNumber = UnicodeAttribute(null=False)
     passwordHash = UnicodeAttribute(null=False)
+    taxId = UnicodeAttribute(null=False)
     id = UnicodeAttribute(null=False, hash_key=True)
     created = UTCDateTimeAttribute(null=False, default=datetime.now())
     updated = UTCDateTimeAttribute(null=True)
 
     @classmethod
     def newItem(cls, fullName, password, taxId, email, phoneNumber):
-        advertiser = Advertiser(
+        user = User(
             fullName=fullName,
             passwordHash=ApiKms.encrypt(password),
             taxId=taxId,
             phoneNumber=phoneNumber,
             email=email,
         )
-        return advertiser.save()
+        return user.save()
 
     @classmethod
     def updateItem(cls, **kwargs):
-        advertiser = Advertiser.get(
+        advertiser = User.get(
             kwargs.get("taxId"),
             kwargs.get("email"),
         )
         advertiser.refresh()
         advertiser.update(actions=[
-            Advertiser.fullName.set(kwargs.get("fullName")) or Advertiser.fullName,
-            Advertiser.companyName.set(kwargs.get("companyName")) or Advertiser.companyName,
-            Advertiser.phoneNumber.set(kwargs.get("phoneNumber")) or Advertiser.phoneNumber,
-            Advertiser.updated.set(datetime.now())
+            User.fullName.set(kwargs.get("fullName")) or User.fullName,
+            User.phoneNumber.set(kwargs.get("phoneNumber")) or User.phoneNumber,
+            User.updated.set(datetime.now())
         ])
 
     @classmethod
     def deleteItem(cls, taxId, email):
-        advertiser = Advertiser(
+        user = User(
             taxId=taxId,
             email=email
         )
-        return advertiser.delete()
+        return user.delete()
 
     @classmethod
     def createTable(cls):
-        if not Advertiser.exists():
-            Advertiser.create_table(
+        if not User.exists():
+            User.create_table(
                 read_capacity_units=10,
                 write_capacity_units=10,
                 wait=True
@@ -64,28 +64,37 @@ class Advertiser(Model):
 
     @classmethod
     def dropTable(cls):
-        if Advertiser.exists():
-            Advertiser.delete_table()
+        if User.exists():
+            User.delete_table()
 
     @classmethod
     def tableDefinitions(cls):
-        if Advertiser.exists():
-            return Advertiser.describe_table()
+        if User.exists():
+            return User.describe_table()
 
     @classmethod
     def queryByTaxIdAndEmail(cls, taxId, email):
-        return Advertiser.get(taxId, email)
+        return User.get(taxId, email)
 
     @classmethod
     def queryByTaxId(cls, taxId):
-        for item in Advertiser.query(taxId):
+        for item in User.query(taxId):
             return item
+
+    @classmethod
+    def getPasswordHashByEmail(cls, email):
+        for item in User.query(email):
+            return item.passwordHash
+
+    @classmethod
+    def getPasswordTaxId(cls, taxId):
+        for item in User.query(taxId):
+            return item.passwordHash
 
     @classmethod
     def json(cls, advertiser):
         return {
-            "fullName": Advertiser.fullName,
-            "companyName": advertiser.companyName,
+            "fullName": User.fullName,
             "taxId": advertiser.taxId,
             "email": advertiser.email,
             "phoneNumber": advertiser.phoneNumber,
