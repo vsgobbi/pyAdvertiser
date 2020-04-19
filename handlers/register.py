@@ -16,9 +16,11 @@ def get():
     if len(errors) > 0:
         return ApiResponses.badRequestMessage(errors)
 
-    user = User.queryByTaxIdAndEmail(taxId, queryStringemail)
-    item = User.json(user)
-    return ApiResponses.successMessage(item)
+    user = User.queryByTaxId(taxId)
+    if user:
+        return ApiResponses.successMessage(item=user)
+
+    return ApiResponses.notFoundMessage("Usuário não encontrado")
 
 
 @register.route("/api/v1/register", methods=["POST"])
@@ -46,7 +48,7 @@ def post():
             email,
             phoneNumber
         )
-        return ApiResponses.successMessage(message="sucesso", item="novo usuário registrado")
+        return ApiResponses.successMessage(message="sucesso", item="Novo usuário registrado")
     except Exception as error:
         return ApiResponses.badRequestMessage("Não foi possível criar usuário, {}".format(error))
 
