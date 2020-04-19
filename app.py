@@ -6,7 +6,6 @@ from handlers.register import register
 from handlers.login import login, login_manager
 
 app = Flask(__name__)
-app.secret_key = b'some secret word'
 app.register_blueprint(advertiser)
 app.register_blueprint(advertisement)
 app.register_blueprint(register)
