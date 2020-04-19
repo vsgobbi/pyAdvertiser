@@ -4,8 +4,13 @@ A frontend client that was bootstrapped with [Create React App](https://github.c
 ## Available Scripts
 
 In the project directory, you can run:
-
-### `npm start`
+```
+npm start
+```
+or if this project was cloned and running for first time then run:
+```
+npm install
+```
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -62,8 +67,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/ad
 
 ### Deployment
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
 ### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

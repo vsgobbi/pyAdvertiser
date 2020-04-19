@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import { Form, Container } from "./styles";
 
 class Advertiser extends Component {
@@ -13,7 +12,7 @@ class Advertiser extends Component {
 
   handleSignUp = e => {
     e.preventDefault();
-    alert("Usuário registrado");
+    alert("Anúncio cadastrado");
   };
 
   render() {
@@ -23,13 +22,18 @@ class Advertiser extends Component {
           {this.state.error && <p>{this.state.error}</p>}
           <input
             type="text"
-            placeholder="Nome Completo"
+            placeholder="Título"
             onChange={e => this.setState({ fullName: e.target.value })}
           />
           <input
             type="text"
-            placeholder="Empresa"
+            placeholder="Descriçao"
             onChange={e => this.setState({ companyName: e.target.value })}
+          />
+          <input
+            type="tel"
+            placeholder="Telefone"
+            onChange={e => this.setState({ phoneNumber: e.target.value })}
           />
           <input
             type="tel"

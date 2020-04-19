@@ -1,9 +1,10 @@
-from flask import Flask
+from flask import Flask, make_response
 from utils.responses import ApiResponses
 from handlers.advertiser import advertiser
 from handlers.advertisement import advertisement
 from handlers.register import register
 from handlers.login import login, login_manager
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 app.register_blueprint(advertiser)
@@ -11,8 +12,11 @@ app.register_blueprint(advertisement)
 app.register_blueprint(register)
 app.register_blueprint(login)
 login_manager.init_app(app)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
+@cross_origin()
 @app.route("/", methods=["GET"])
 def home():
     return ApiResponses.successMessage(

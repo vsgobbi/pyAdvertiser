@@ -37,17 +37,20 @@ def get():
 
 @advertiser.route("/api/v1/advertiser", methods=["POST"])
 def post():
+
     fullName = request.json["fullName"]
     companyName = request.json["companyName"]
     taxId = request.json["taxId"]
     email = request.json["email"]
     phoneNumber = request.json["phoneNumber"]
 
-    ApiValidators.validateTaxId(taxId)
-    ApiValidators.validateEmail(email)
-    ApiValidators.validateCompanyName(fullName)
-    ApiValidators.validateCompanyName(fullName)
-    ApiValidators.validatePhone(phoneNumber)
+    taxId, errors = ApiValidators.validateTaxId(taxId)
+    email, errors = ApiValidators.validateEmail(email)
+    companyName, errors = ApiValidators.validateCompanyName(companyName)
+    phoneNumber, errors =ApiValidators.validatePhone(phoneNumber)
+
+    if len(errors) > 0:
+        return ApiResponses.badRequestMessage(errors)
 
     try:
         advertiser = Advertiser.newItem(
@@ -57,9 +60,10 @@ def post():
             email=email,
             phoneNumber=phoneNumber
         )
-        return ApiResponses.successMessage(item=Advertiser.json(advertiser))
+        return ApiResponses.successMessage(message="sucesso", item="Empresa '{}' foi registrada".format(companyName))
+
     except Exception as error:
-        return ApiResponses.badRequestMessage(error)
+        return ApiResponses.badRequestMessage("{}".format(error))
 
 
 @advertiser.route("/api/v1/advertiser", methods=["PATCH"])

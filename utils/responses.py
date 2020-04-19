@@ -1,8 +1,16 @@
-from flask import Response, jsonify
+from flask import Response, jsonify, make_response
 
 
 class ApiResponses(object):
-    Response.headers = {"application/json"}
+    response = Response()
+    # Response.headers = {"application/json"}
+    response.headers.add("Content-Type", "application/json")
+    response.headers.add("Access-Control-Allow-Origin", "*")
+
+    Response.headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+    }
 
     @classmethod
     def badRequestMessage(cls, error):

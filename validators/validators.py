@@ -123,6 +123,34 @@ class ApiValidators(object):
         return zipCode, errors
 
     @classmethod
+    def validatePrice(cls, price):
+        errors = []
+
+        if not price:
+            errors.append("Campo price obrigatório")
+
+        if price and not isinstance(price, int):
+            errors.append("Campo price deve ser do tipo inteiro, ex: 59.9 = R$59,90")
+
+        if price and (price < 0 or price > 999999999):
+            errors.append("Campo price deve ser inteiro positivo e menor que 999999999")
+
+        return price, errors
+
+    @classmethod
+    def validateTags(cls, tags):
+        errors = []
+
+        if tags and not isinstance(tags, list):
+            errors.append("Campo tags inválido, deve ser do tipo lista. "
+                          "Exemplo: ['moda', 'beleza', 'salao', 'servico']")
+
+        if tags and (len(tags) < 2 or len(tags) > 10):
+            errors.append("Campo tags inválido, deve contar no mínimo 2 e máximo 10 tags")
+
+        return tags, errors
+
+    @classmethod
     def validatePhone(cls, phoneNumber):
         errors = []
         phoneNumberExpression = r"^[0-9]{11}$"

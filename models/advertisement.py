@@ -14,10 +14,10 @@ class Advertisement(Model):
     advertiserTaxId = UnicodeAttribute(null=False, hash_key=True)
     category = UnicodeAttribute(null=False, range_key=True)
     phoneNumber = UnicodeAttribute(null=False)
-    whatsAppApi = UnicodeAttribute(null=False)
+    description = UnicodeAttribute(null=False)
+    whatsAppApi = UnicodeAttribute(null=True)
     picturesUrl = UnicodeAttribute(null=True)
     socialMedia = UnicodeAttribute(null=True)
-    description = UnicodeAttribute(null=False)
     tags = UnicodeSetAttribute(null=True)
     price = NumberAttribute(null=False)
     created = UTCDateTimeAttribute(null=False, default=datetime.now())
@@ -26,8 +26,8 @@ class Advertisement(Model):
 
     @classmethod
     def newItem(cls, title, category, description, phoneNumber,
-                price, socialMedia, advertiserTaxId, whatsAppApi,
-                tags=None, picturesUrl=None):
+                price, advertiserTaxId, whatsAppApi=None,
+                tags=None, socialMedia=None, picturesUrl=None):
         advertisement = Advertisement(
             title=title,
             category=category,
@@ -103,10 +103,12 @@ class Advertisement(Model):
     def json(cls, advertisement):
         return {
             "title": advertisement.title,
-            "companyName": advertisement.description,
+            "description": advertisement.description,
             "taxId": advertisement.advertiserTaxId,
+            "category": advertisement.category,
             "whatsAppApi": advertisement.whatsAppApi,
             "phoneNumber": advertisement.phoneNumber,
             "price": advertisement.price,
+            "tags": (list(advertisement.tags)) if advertisement.tags else "None",
             "created": advertisement.created.strftime("%Y-%m-%d"),
         }

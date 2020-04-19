@@ -48,7 +48,7 @@ def post():
             email,
             phoneNumber
         )
-        return ApiResponses.successMessage(message="sucesso", item="Novo usuário registrado")
+        return ApiResponses.successMessage(message="sucesso", item="Usuário '{}' foi registrado".format(fullName))
     except Exception as error:
         return ApiResponses.badRequestMessage("Não foi possível criar usuário, {}".format(error))
 
