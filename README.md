@@ -1,12 +1,13 @@
-##Python Web Advertiser: A Flask RESTful API with PynamoDB and AWS Lambda
+##Python ATNAP Web Advertiser: A Flask RESTful API with PynamoDB and AWS Lambda
 
 ## Description
 Web project development of an API using Flask, designed with Blueprints pattern, 
 database created with NoSQL DynamoDB as PynamoDB (https://github.com/pynamodb/PynamoDB) 
 and VueJs (https://vuejs.org/) in order to deploy at Amazon Web Services for Lambda Python 3.7 environment.
 Using Serverless framework to deploy on localhost and deploying it to AWS Lambda as well. 
-Used NodeJS Axios to access created API routes with front end client requests. Building UI using VueJs
-framework. This project is ***GPL v3.0 licensed***.
+Used NodeJS Axios to access created API routes with front end client requests.
+Project created by ATNAP team as designed for Hackatrouble.
+This project is ***GPL v3.0 licensed***.
 
 ## Table of Contents
 
@@ -56,30 +57,26 @@ $ sls deploy
 ```
 $ sls logs -f app
 ```
-### Creating VUEjs front end application:
-### first install nodejs and npm
-### Install vue cli: 
+### Current REST endpoints [GET, POST, PATCH DELETE] :
+### User registration:
 ```
-$ npm install -g @vue/cli
+$ /api/v1/register
 ```
-### Create VUE project 'client' for Single Page Application
+### User login/authentication:
 ```
-$ vue create client
+$ /api/v1/login
 ```
-### Install vuetify and select 'Default' preset:
+### Advertiser, company informations and registration:
 ```
-$ cd client && vue add vuetify
+$ /api/v1/advertiser
 ```
-### Install nodejs Axios on client to consume our API:
+### Advertisement, company detailed advertisements:
 ```
-$ npm install -S axios
-```
-### Deploy frontend and run client 
-```
-$ npm run serve
+$ /api/v1/advertisement
 ```
 
-## Running
+
+## Running Application
 ### check serverless.yml and deploy on localhost: 
 ```
 $ sls wsgi serve
