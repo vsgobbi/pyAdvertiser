@@ -7,7 +7,7 @@ class ApiKms(object):
     @classmethod
     def encrypt(cls, string):
         cipher = kmsClient.encrypt(KeyId=keyId, Plaintext=str(string))
-        return b64encode(cipher["CiphertextBlob"])
+        return b64encode(cipher["CiphertextBlob"]).decode()
 
     @classmethod
     def decrypt(cls, encodedCipher):
