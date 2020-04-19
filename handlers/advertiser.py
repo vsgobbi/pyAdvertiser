@@ -1,6 +1,7 @@
 from flask import request, Blueprint
 from models.advertiser import Advertiser
 from utils.responses import ApiResponses
+from validators.validators import ApiValidators
 
 advertiser = Blueprint("advertiser", __name__)
 
@@ -8,19 +9,53 @@ advertiser = Blueprint("advertiser", __name__)
 @advertiser.route("/api/v1/advertiser", methods=["GET"])
 def get():
     queryStringTaxId = request.args.get("taxId")
+    queryStringEmail = request.args.get("email")
 
-    if not queryStringTaxId:
-        return ApiResponses.badRequestMessage("missing taxId query string parameter")
+    if queryStringTaxId:
+        taxId = ApiValidators.validateTaxId(taxId=queryStringTaxId)
+        advertiser = Advertiser.queryByTaxId(taxId)
+        return ApiResponses.successMessage(item=advertiser)
+
+    if queryStringEmail and queryStringTaxId:
+        email = ApiValidators.validateEmail(queryStringEmail)
+        taxId = ApiValidators.validateTaxId(queryStringTaxId)
+        advertiser = Advertiser.queryByTaxIdAndEmail(taxId, email)
+        return ApiResponses.successMessage(item=advertiser)
 
     if Advertiser.exists():
         advertiser = Advertiser.queryByTaxId(taxId=queryStringTaxId)
         return ApiResponses.successMessage(Advertiser.json(advertiser))
+
+    if not queryStringEmail and not queryStringTaxId:
+        advertisers = Advertiser.scanAll()
+        return ApiResponses.successMessage(item=advertisers)
 
 
 @advertiser.route("/api/v1/advertiser", methods=["POST"])
 def post():
     fullName = request.json["fullName"]
     companyName = request.json["companyName"]
+    taxId = request.json["taxId"]
+    email = request.json["email"]
+    phoneNumber = request.json["phoneNumber"]
+
+    ApiValidators.validateTaxId(taxId)
+    ApiValidators.validateEmail(email)
+    ApiValidators.validateCompanyName(fullName)
+    ApiValidators.validateCompanyName(fullName)
+    ApiValidators.validatePhone(phoneNumber)
+
+    try:
+        advertiser = Advertiser.newItem(
+            fullName=fullName,
+            companyName=companyName,
+            taxId=taxId,
+            email=email,
+            phoneNumber=phoneNumber
+        )
+        return ApiResponses.successMessage(item=Advertiser.json(advertiser))
+    except Exception as error:
+        return ApiResponses.badRequestMessage(error)
 
 
 @advertiser.route("/api/v1/advertiser", methods=["PATCH"])
@@ -43,6 +78,13 @@ def patch():
 
 @advertiser.route("/api/v1/advertiser", methods=["DELETE"])
 def delete():
-    queryStringDtDate = request.args.get("dtDate")
-    return ApiResponses.successMessage(message="Rota deletar empresa ainda a ser implementada")
+    queryStringTaxId = request.args.get("taxId")
+    queryStringEmail = request.args.get("email")
 
+    taxId = ApiValidators.validateTaxId(queryStringTaxId)
+    email = ApiValidators.validateEmail(queryStringEmail)
+    try:
+        advertiser = Advertiser.deleteItem(taxId, email)
+        return ApiResponses.successMessage(message="Empresa deletada com sucesso", item=Advertiser.json(advertiser))
+    except Exception as error:
+        return ApiResponses.badRequestMessage("Não foi possível deletar empresa {0}, {1}".format(taxId, error))

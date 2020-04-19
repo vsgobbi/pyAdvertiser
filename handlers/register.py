@@ -9,11 +9,14 @@ register = Blueprint("register", __name__)
 @register.route("/api/v1/register", methods=["GET"])
 def get():
     # Logged in:
-    taxId = request.args.get("taxId")
-    email = request.args.get("email")
-    taxId = ApiValidators.validateTaxId(taxId)
+    queryStringtaxId = request.args.get("taxId")
+    queryStringemail = request.args.get("email")
+    taxId, errors = ApiValidators.validateTaxId(queryStringtaxId)
 
-    user = User.queryByTaxIdAndEmail(taxId, email)
+    if len(errors) > 0:
+        return ApiResponses.badRequestMessage(errors)
+
+    user = User.queryByTaxIdAndEmail(taxId, queryStringemail)
     item = User.json(user)
     return ApiResponses.successMessage(item)
 
@@ -26,18 +29,22 @@ def post():
     email = request.json.get("email")
     phoneNumber = request.json.get("phoneNumber")
 
-    ApiValidators.validateEmail(email)
-    ApiValidators.validatePassword(password)
-    ApiValidators.validatePhone(phoneNumber)
-    ApiValidators.validateTaxId(taxId)
-    ApiValidators.validateUsername(fullName)
+    taxId, errors = ApiValidators.validateTaxId(taxId)
+    email, errors = ApiValidators.validateEmail(email)
+    password, errors = ApiValidators.validatePassword(password)
+    phoneNumber, errors = ApiValidators.validatePhone(phoneNumber)
+    fullName, errors = ApiValidators.validateUsername(fullName)
+
+    if len(errors) > 0:
+        return ApiResponses.badRequestMessage(errors)
+
     try:
         User.newItem(
-        fullName,
-        password,
-        taxId,
-        email,
-        phoneNumber
+            fullName,
+            password,
+            taxId,
+            email,
+            phoneNumber
         )
         return ApiResponses.successMessage(message="sucesso", item="novo usuário registrado")
     except Exception as error:
@@ -45,5 +52,5 @@ def post():
 
 
 @register.route("/api/v1/register", methods=["DELETE"])
-def get():
+def delete():
     return ApiResponses.successMessage(message="Rota deletar usuário ainda a ser implementada")
