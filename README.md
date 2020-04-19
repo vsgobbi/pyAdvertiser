@@ -1,4 +1,4 @@
-## Python ATNAP Web Advertiser: A Flask RESTful API with PynamoDB and AWS Lambda
+## ATNAP (Aqui tem Nova Alta Paulista) project. A python Web Advertiser: Flask RESTful API with PynamoDB and AWS Lambda
 
 ## Description
 Web project development of an API using Flask, designed with Blueprints pattern, 
