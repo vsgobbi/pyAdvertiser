@@ -65,6 +65,8 @@ class ApiValidators(object):
         if len(username) < 6 or len(username) > 20:
             errors.append("Usuário deve conter de 6 a 20 dígitos alphanumerico")
 
+        return username, errors
+    
     @classmethod
     def validateCompanyName(cls, companyName):
         errors = []
