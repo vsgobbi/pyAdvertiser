@@ -44,3 +44,5 @@ def patch():
 @advertiser.route("/api/v1/advertiser", methods=["DELETE"])
 def delete():
     queryStringDtDate = request.args.get("dtDate")
+    return ApiResponses.successMessage(message="Rota deletar empresa ainda a ser implementada")
+

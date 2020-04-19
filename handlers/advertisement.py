@@ -12,14 +12,14 @@ def get():
     tags = request.args.get("tags")
     price = request.args.get("price")
 
-    if not title:
-        return ApiResponses.badRequestMessage("missing title parameter")
+    if not title or not tags:
+        return ApiResponses.badRequestMessage("Parâmetro querystring 'title' ou 'tags' está faltando.")
 
     if price and not isinstance(price, float):
         return ApiResponses.badRequestMessage("invalid data type of price parameter, ex: 103.5 must be integer")
 
-    if not creationDate:
-        return ApiResponses.badRequestMessage("missing creationDate parameter")
+    if creationDate and not ApiValidators.isDateISO8601(creationDate):
+        return ApiResponses.badRequestMessage("Parâmetro creationDate incorreto")
 
     if creationDate and not ApiValidators.isDateISO8601(creationDate):
         return ApiResponses.badRequestMessage("invalid format of creationDate parameter, ex: 2016-11-14")
@@ -43,3 +43,5 @@ def patch():
 @advertisement.route("/api/v1/advertisement", methods=["DELETE"])
 def delete():
     queryStringDtDate = request.args.get("date")
+    return ApiResponses.successMessage(message="Rota deletar anúncio ainda a ser implementada")
+
