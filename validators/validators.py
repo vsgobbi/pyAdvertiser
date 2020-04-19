@@ -41,71 +41,115 @@ class ApiValidators(object):
 
     @classmethod
     def validatePassword(cls, password):
+        errors = []
         if not password:
-            return "Senha inválida"
+            errors.append("Senha inválida")
 
         if not isinstance(password, str):
-            return "Senha deve ser do tipo texto"
+            errors.append("Senha deve ser do tipo texto")
 
         if len(password) < 6 or len(password) > 12:
-            return "Senha deve conter de 6 a 12 dígitos alphanumerico"
+            errors.append("Senha deve conter de 6 a 12 dígitos alphanumerico")
+
+        return password, errors
 
     @classmethod
     def validateUsername(cls, username):
+        errors = []
         if not username:
-            return "Usuário deve ser obrigatório"
+            errors.append("Usuário deve ser obrigatório")
 
         if not isinstance(username, str):
-            return "Usuário deve ser do tipo texto"
+            errors.append("Usuário deve ser do tipo texto")
 
         if len(username) < 6 or len(username) > 20:
-            return "Usuário deve conter de 6 a 20 dígitos alphanumerico"
+            errors.append("Usuário deve conter de 6 a 20 dígitos alphanumerico")
+
+    @classmethod
+    def validateCompanyName(cls, companyName):
+        errors = []
+        if not companyName:
+            errors.append("Nome da empresa deve ser obrigatório")
+
+        if companyName and not isinstance(companyName, str):
+            errors.append("Nome da empresa deve ser do tipo texto")
+
+        if companyName and (len(companyName) < 3 or len(companyName) > 20):
+            errors.append("Nome da empresa de 3 a 20 dígitos alphanumerico")
+
+        return companyName, errors
 
     @classmethod
     def validateTaxId(cls, taxId):
-        cpfRegex = r"[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}"
-        cnpjRegex = r"[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2}"
+        errors = []
         if not taxId:
-            return "CNPJ ou CPF obrigatório"
+            errors.append("CNPJ ou CPF obrigatório")
 
-        if not match(cpfRegex, taxId) or not match(cnpjRegex, taxId):
-            return "CPF ou CNPJ inválido! Campo deve ser formatado como: '33.549.327/0001-76'"
+        if taxId and not isinstance(taxId, str):
+            errors.append("CNPJ ou CPF deve ser do tipo texto, exemplo: '33.549.327/0001-76'")
+            return taxId, errors
+        if taxId and not match(
+            "([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})",
+            taxId
+        ):
+            errors.append("CPF ou CNPJ inválido! Campo deve ser formatado como: '33.549.327/0001-76'")
+
+        return taxId, errors
 
     @classmethod
     def validateEmail(cls, email):
+        errors = []
         if not email:
-            return "Campo email obrigatório"
+            errors.append("Campo email obrigatório")
 
         if not match(r"[^@]+@[^@]+\.[^@]+", email):
-            return "E-mail inválido, por favor, insira como exemplo: fulano@algo.com"
+            errors.append("E-mail inválido, por favor, insira como exemplo: fulano@algo.com")
+
+        return email, errors
 
     @classmethod
     def validateZipCode(cls, zipCode):
+        errors = []
         zipCodeExpression = r"^[0-9]{5}-[0-9]{3}$"
+
+        if not zipCode:
+            errors.append("Campo CEP obrigatório")
+
         if not match(zipCodeExpression, zipCode):
-            return "CEP inválido, exemplo: 04159-040"
+            errors.append("CEP inválido, exemplo: 04159-040")
+
+        return zipCode, errors
 
     @classmethod
     def validatePhone(cls, phoneNumber):
+        errors = []
         phoneNumberExpression = r"^[0-9]{11}$"
         if not phoneNumber:
-            return "Campo celular obrigatório"
+            errors.append("Campo celular obrigatório")
 
         if not match(phoneNumberExpression, phoneNumber):
-            return "Celular inválido, insira como exemplo: 18997133400"
+            errors.append("Celular inválido, insira como exemplo: 18997133400")
+
+        return phoneNumber, errors
 
     @classmethod
     def validateStreetLine(cls, streetLine):
+        errors = []
         if not streetLine:
-            return "Campo endereço obrigatório"
+            errors.append("Campo endereço obrigatório")
 
         if len(streetLine) < 3 or len(streetLine) > 30:
-            return "Campo endereço inválido, insira como exemplo: Avenida das Letras, 282"
+            errors.append("Campo endereço inválido, insira como exemplo: Avenida das Letras, 282")
+
+        return streetLine, errors
 
     @classmethod
     def validateCity(cls, city):
+        errors = []
         if not city:
-            return "Campo cidade obrigatório"
+            errors.append("Campo cidade obrigatório")
 
         if len(city) < 3 or len(city) > 20:
-            return "Campo cidade inválido, insira como exemplo: Adamantina"
+            errors.append("Campo cidade inválido, insira como exemplo: Adamantina")
+
+        return city, errors
