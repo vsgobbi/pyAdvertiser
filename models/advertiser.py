@@ -10,13 +10,13 @@ class Advertiser(Model):
         table_name = "atnap_advertiser"
         region = region
 
-    created = UTCDateTimeAttribute(null=False, default=datetime.now())
-    updated = UTCDateTimeAttribute(null=True)
     fullName = UnicodeAttribute(null=False)
     companyName = UnicodeAttribute(null=False)
     taxId = UnicodeAttribute(null=False, hash_key=True)
     email = UnicodeAttribute(null=False, range_key=True)
     phoneNumber = UnicodeAttribute(null=False)
+    created = UTCDateTimeAttribute(null=False, default=datetime.now())
+    updated = UTCDateTimeAttribute(null=True)
 
     @classmethod
     def newItem(cls, fullName, companyName, taxId, email, phoneNumber):
@@ -71,18 +71,32 @@ class Advertiser(Model):
             return Advertiser.describe_table()
 
     @classmethod
+    def scanAll(cls):
+        queryResult = []
+        item_keys = [('fullName-{0}'.format(x), 'thread-{0}'.format(x)) for x in range(100)]
+
+        for item in Advertiser.batch_get(item_keys):
+            queryResult.append(cls.json(item))
+
+        return queryResult
+
+    @classmethod
     def queryByTaxIdAndEmail(cls, taxId, email):
-        return Advertiser.get(taxId, email)
+        advertiser = Advertiser.get(taxId, email)
+        return cls.json(advertiser)
 
     @classmethod
     def queryByTaxId(cls, taxId):
+        queryResult = []
         for item in Advertiser.query(taxId):
-            return item
+            queryResult.append(cls.json(item))
+
+        return queryResult
 
     @classmethod
     def json(cls, advertiser):
         return {
-            "fullName": Advertiser.fullName,
+            "fullName": advertiser.fullName,
             "companyName": advertiser.companyName,
             "taxId": advertiser.taxId,
             "email": advertiser.email,

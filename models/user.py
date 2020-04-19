@@ -1,7 +1,7 @@
+from uuid import uuid4
 from pynamodb.models import Model
 from pynamodb.attributes import UTCDateTimeAttribute, UnicodeAttribute
 from datetime import datetime
-
 from utils.configs import region
 from utils.kms import ApiKms
 
@@ -13,11 +13,11 @@ class User(Model):
         region = region
 
     fullName = UnicodeAttribute(null=False)
-    email = UnicodeAttribute(null=False, range_key=True)
     phoneNumber = UnicodeAttribute(null=False)
     passwordHash = UnicodeAttribute(null=False)
-    taxId = UnicodeAttribute(null=False)
-    id = UnicodeAttribute(null=False, hash_key=True)
+    taxId = UnicodeAttribute(null=False, hash_key=True,)
+    id = UnicodeAttribute(null=False, default_for_new=str(uuid4())[:16])
+    email = UnicodeAttribute(null=False, range_key=True)
     created = UTCDateTimeAttribute(null=False, default=datetime.now())
     updated = UTCDateTimeAttribute(null=True)
 
@@ -34,12 +34,12 @@ class User(Model):
 
     @classmethod
     def updateItem(cls, **kwargs):
-        advertiser = User.get(
+        user = User.get(
             kwargs.get("taxId"),
             kwargs.get("email"),
         )
-        advertiser.refresh()
-        advertiser.update(actions=[
+        user.refresh()
+        user.update(actions=[
             User.fullName.set(kwargs.get("fullName")) or User.fullName,
             User.phoneNumber.set(kwargs.get("phoneNumber")) or User.phoneNumber,
             User.updated.set(datetime.now())
@@ -65,7 +65,7 @@ class User(Model):
     @classmethod
     def dropTable(cls):
         if User.exists():
-            User.delete_table()
+            return User.delete_table()
 
     @classmethod
     def tableDefinitions(cls):
@@ -78,8 +78,11 @@ class User(Model):
 
     @classmethod
     def queryByTaxId(cls, taxId):
+        queryResult = []
         for item in User.query(taxId):
-            return item
+            queryResult.append(cls.json(item))
+
+        return queryResult
 
     @classmethod
     def getPasswordHashByEmail(cls, email):
@@ -92,11 +95,11 @@ class User(Model):
             return item.passwordHash
 
     @classmethod
-    def json(cls, advertiser):
+    def json(cls, user):
         return {
-            "fullName": User.fullName,
-            "taxId": advertiser.taxId,
-            "email": advertiser.email,
-            "phoneNumber": advertiser.phoneNumber,
-            "created": advertiser.created.strftime("%Y-%m-%d"),
+            "fullName": user.fullName,
+            "taxId": user.taxId,
+            "email": user.email,
+            "phoneNumber": user.phoneNumber,
+            "created": user.created.strftime("%Y-%m-%d"),
         }
