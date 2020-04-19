@@ -11,8 +11,12 @@ def get():
     queryStringTaxId = request.args.get("taxId")
     queryStringEmail = request.args.get("email")
 
+    taxId, errors = ApiValidators.validateTaxId(taxId=queryStringTaxId)
+
+    if len(errors) > 0:
+        return ApiResponses.badRequestMessage(errors)
+
     if queryStringTaxId:
-        taxId = ApiValidators.validateTaxId(taxId=queryStringTaxId)
         advertiser = Advertiser.queryByTaxId(taxId)
         return ApiResponses.successMessage(item=advertiser)
 
