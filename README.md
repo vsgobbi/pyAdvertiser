@@ -18,7 +18,7 @@ This project is ***GPL v3.0 licensed***.
 
 - [Install it](#install)
 - [Endpoints](#current-endpoints)
-- [Front End](#current-frontend-website-hosted-by-aws-amplify)
+- [Front End](#current-front-end-website-hosted-by-aws-amplify)
 - [Running application](#running-application)
 - [Contributing](#contributing)
 - [License](#license)
@@ -83,11 +83,11 @@ $ /api/v1/advertiser
 $ /api/v1/advertisement
 ```
 
-## Current Frontend Website Hosted by AWS Amplify: <br />
+## Current Front-end Website Hosted by AWS Amplify: <br />
 <a href="https://master.d1jjesgxkfrs63.amplifyapp.com/" target="_blank">PORTAL ATNAP</a>
 
-## Current frontend git repo: <br />
-<a href="https://github.com/PatrickCalorioCarvalho/hackatrouble-ATNAP" target="_blank">Front End with ReactJs</a>
+## Current Front-end git repo: <br />
+<a href="https://github.com/PatrickCalorioCarvalho/hackatrouble-ATNAP" target="_blank">Front-end with ReactJs</a>
 
 ## Running Application
 ### check serverless.yml and deploy on localhost: 
