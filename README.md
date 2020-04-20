@@ -14,7 +14,7 @@ This project is ***GPL v3.0 licensed***.
 
 
 - [Install it](#install)
-- [Endpoints](#current-endpoints-get-post-patch-delete-)
+- [Endpoints](#current-endpoints)
 - [Running application](#running-application)
 - [Contributing](#contributing)
 - [License](#license)
@@ -59,7 +59,9 @@ $ sls deploy
 ```
 $ sls logs -f app
 ```
-### Current endpoints [GET, POST, PATCH, DELETE...] :
+### Current endpoints:
+#### Endpoints and API V1 Documentation: <a href="https://documenter.getpostman.com/view/6679239/Szf6WTn4?version=latest" target="_blank">ATNAP API v1</a>
+
 ### User registration:
 ```
 $ /api/v1/register
