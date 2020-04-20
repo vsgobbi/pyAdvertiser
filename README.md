@@ -18,7 +18,7 @@ This project is ***GPL v3.0 licensed***.
 
 - [Install it](#install)
 - [Endpoints](#current-endpoints)
-- [Front End](#current-front-end)
+- [Front-end](#current-front-end)
 - [Running application](#running-application)
 - [Contributing](#contributing)
 - [License](#license)
@@ -84,7 +84,7 @@ $ /api/v1/advertisement
 ```
 
 ## Current Front-end:
-###Website Hosted by AWS Amplify: <a href="https://master.d1jjesgxkfrs63.amplifyapp.com/" target="_blank">PORTAL ATNAP</a>
+### Website Hosted by AWS Amplify: <a href="https://master.d1jjesgxkfrs63.amplifyapp.com/" target="_blank">PORTAL ATNAP</a>
 
 ### Current Front-end git repo: <a href="https://github.com/PatrickCalorioCarvalho/hackatrouble-ATNAP" target="_blank">Front-end with ReactJs</a>
 
