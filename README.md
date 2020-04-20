@@ -7,10 +7,10 @@ database created with NoSQL DynamoDB as PynamoDB (https://github.com/pynamodb/Py
 Using AWS KMS service to encrypt hashed passwords and secure login system.
 In order to deploy at Amazon Web Services for Lambda with Python 3.7 environment we use Serverless framework.
 Using Serverless framework to deploy on localhost and deploying it to AWS Lambda as well. 
-Used NodeJS Axios to access created API routes with front end client requests.
-Our website: https://master.d1jjesgxkfrs63.amplifyapp.com/
-API Documentation: https://documenter.getpostman.com/view/6679239/Szf6WTn4?version=latest
-Our purpose (pt-br): https://youtu.be/8zPwqxar7Q4
+Used NodeJS Axios to access created API routes with front end client requests. <br />
+Our website: https://master.d1jjesgxkfrs63.amplifyapp.com/ <br />
+API Documentation: https://documenter.getpostman.com/view/6679239/Szf6WTn4?version=latest <br />
+Our purpose (pt-br): https://youtu.be/8zPwqxar7Q4 <br />
 This project is ***GPL v3.0 licensed***.
 
 ## Table of Contents
