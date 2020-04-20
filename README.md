@@ -83,11 +83,11 @@ $ /api/v1/advertiser
 $ /api/v1/advertisement
 ```
 
-## Current Frontend Website Hosted by AWS Amplify:
-##<a href="https://master.d1jjesgxkfrs63.amplifyapp.com/" target="_blank">PORTAL ATNAP</a>
+## Current Frontend Website Hosted by AWS Amplify: <br />
+<a href="https://master.d1jjesgxkfrs63.amplifyapp.com/" target="_blank">PORTAL ATNAP</a>
 
-## Current frontend git repo: 
-##<a href="https://github.com/PatrickCalorioCarvalho/hackatrouble-ATNAP" target="_blank">Front End with ReactJs</a>
+## Current frontend git repo: <br />
+<a href="https://github.com/PatrickCalorioCarvalho/hackatrouble-ATNAP" target="_blank">Front End with ReactJs</a>
 
 ## Running Application
 ### check serverless.yml and deploy on localhost: 
