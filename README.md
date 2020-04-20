@@ -18,7 +18,7 @@ This project is ***GPL v3.0 licensed***.
 
 - [Install it](#install)
 - [Endpoints](#current-endpoints)
-- [Front End](#current-front-end-website-hosted-by-aws-amplify)
+- [Front End](#current-front-end-website-hosted-by-aws-amplify-br-)
 - [Running application](#running-application)
 - [Contributing](#contributing)
 - [License](#license)
