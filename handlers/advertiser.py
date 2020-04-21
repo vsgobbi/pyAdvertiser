@@ -1,11 +1,13 @@
 from flask import request, Blueprint
 from models.advertiser import Advertiser
 from utils.responses import ApiResponses
+from validators.authentication import authenticated
 from validators.validators import ApiValidators
 
 advertiser = Blueprint("advertiser", __name__)
 
 
+@authenticated
 @advertiser.route("/api/v1/advertiser", methods=["GET"])
 def get():
     queryStringTaxId = request.args.get("taxId")
@@ -34,7 +36,7 @@ def get():
         advertisers = Advertiser.scanAll()
         return ApiResponses.successMessage(item=advertisers)
 
-
+@authenticated
 @advertiser.route("/api/v1/advertiser", methods=["POST"])
 def post():
 
@@ -66,6 +68,7 @@ def post():
         return ApiResponses.badRequestMessage("{}".format(error))
 
 
+@authenticated
 @advertiser.route("/api/v1/advertiser", methods=["PATCH"])
 def patch():
     items = {}
@@ -83,7 +86,7 @@ def patch():
 
     Advertiser.updateItem(**items)
 
-
+@authenticated
 @advertiser.route("/api/v1/advertiser", methods=["DELETE"])
 def delete():
     queryStringTaxId = request.args.get("taxId")

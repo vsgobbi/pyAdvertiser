@@ -1,6 +1,7 @@
-from flask import request, Blueprint, jsonify
+from flask import request, Blueprint
 from models.advertisement import Advertisement
 from utils.responses import ApiResponses
+from validators.authentication import authenticated
 from validators.validators import ApiValidators
 
 advertisement = Blueprint("advertisement", __name__)
@@ -36,6 +37,7 @@ def get():
     return ApiResponses.badRequestMessage("Não foi possível fazer requisição")
 
 
+@authenticated
 @advertisement.route("/api/v1/advertisement", methods=["POST"])
 def post():
 
@@ -75,11 +77,13 @@ def post():
         return ApiResponses.badRequestMessage("Erro ao criar anúncio! {}".format(error))
 
 
+@authenticated
 @advertisement.route("/api/v1/advertisement", methods=["PATCH"])
 def patch():
     queryStringDtDate = request.args.get("date")
 
 
+@authenticated
 @advertisement.route("/api/v1/advertisement", methods=["DELETE"])
 def delete():
     queryStringDtDate = request.args.get("date")
