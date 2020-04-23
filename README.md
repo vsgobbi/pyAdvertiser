@@ -32,14 +32,14 @@ $ source venv/bin/activate
 ```
 ### Install requirements
 ```
-$ pip install -r requirements
+$ pip install -r requirements.txt
 ```
 ### In order to deploy web applications on localhost or on AWS Lambda and AWS API Gateway use Serverless framework:
 ```
 $ npm install -g serverless
 ```
 
-### Check serverless.yml file (choose AWS region to 'us-east-2', runtime to 'python3.7', service name pyAdvertiser):
+### Check serverless.yml file (choose AWS region to 'us-east-1', runtime to 'python3.7', service name pyAdvertiser):
 ```
 $ nano serverless.yml
 ```
