@@ -1,17 +1,16 @@
-from flask import request, Blueprint
+from flask import request, Blueprint, session
 from flask_login import LoginManager, login_user
 from models.user import User
 from utils.responses import ApiResponses
-from validators.authentication import authenticated
+from validators.authentication import authenticated, validCredentials
 from validators.validators import ApiValidators
-from utils.kms import ApiKms
 
 login = Blueprint("login", __name__)
 login_manager = LoginManager()
 
 
-@authenticated
 @login.route("/api/v1/login", methods=["GET"])
+@authenticated
 def get():
     queryStringtaxId = request.args.get("taxId")
 
@@ -20,8 +19,9 @@ def get():
     if len(errors) > 0:
         return ApiResponses.badRequestMessage(errors)
     try:
-        user = User.queryByTaxId(taxId)
-        return ApiResponses.successMessage(message="Usuário {} logado".format(user.fullName))
+        user = User.queryUserByTaxId(taxId)
+
+        return ApiResponses.successMessage(item="Usuário {} logado".format(user.fullName))
     except Exception as error:
         return ApiResponses.badRequestMessage("Não foi possível verificar usuário logado, {}".format(error))
 
@@ -39,17 +39,16 @@ def post():
     if len(errors) > 0:
         return ApiResponses.badRequestMessage(errors)
 
-    user = User.queryByTaxId(taxId)
+    user = User.queryUserByTaxId(taxId)
+
     if not user:
         return ApiResponses.badRequestMessage("Usuário {} inválido!".format(taxId))
 
-    passwordHash = User.getPasswordTaxId(taxId)
+    if taxId != user.taxId:
+        return ApiResponses.badRequestMessage("Usuário {} não encontrado!".format(taxId))
 
-    if password != ApiKms.decrypt(passwordHash):
-        return ApiResponses.badRequestMessage("Senha incorreta!")
+    if validCredentials(user, taxId, password):
+        session["loggedin"] = True
+        return ApiResponses.successMessage(item="Usuário {} logado com sucesso".format(taxId))
 
-    try:
-        if password == ApiKms.decrypt(passwordHash):
-            return ApiResponses.successMessage(item="Usuário {} logado com sucesso".format(taxId))
-    except Exception as error:
-        return ApiResponses.badRequestMessage("Erro ao verificar usuário, {}".format(error))
+    return ApiResponses.badRequestMessage("Senha incorreta!")
