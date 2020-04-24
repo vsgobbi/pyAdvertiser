@@ -85,6 +85,11 @@ class User(Model):
         return queryResult
 
     @classmethod
+    def queryUserByTaxId(cls, taxId):
+        for item in User.query(taxId):
+            return item
+
+    @classmethod
     def getPasswordHashByEmail(cls, email):
         for item in User.query(email):
             return item.passwordHash
