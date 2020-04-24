@@ -81,11 +81,12 @@ def post():
 @advertisement.route("/api/v1/advertisement", methods=["PATCH"])
 def patch():
     queryStringDtDate = request.args.get("date")
+    return ApiResponses.successMessage(item="Rota a ser implementada")
 
 
 @authenticated
 @advertisement.route("/api/v1/advertisement", methods=["DELETE"])
 def delete():
     queryStringDtDate = request.args.get("date")
-    return ApiResponses.successMessage(message="Rota deletar anúncio ainda a ser implementada")
+    return ApiResponses.successMessage(item="Rota a ser implementada")
 
