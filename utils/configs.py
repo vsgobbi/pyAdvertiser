@@ -10,7 +10,6 @@ region = "us-east-1"
 try:
     kmsClient = boto3.client("kms", "us-east-1")
     kmsKeyId = os.environ["KMS_KEY_ID"]
-    print(kmsKeyId)
 except Exception as error:
     print("Set KMS key id as environment variable before using it!, {}".format(error))
 
