@@ -1,16 +1,16 @@
 from flask import request, Blueprint
 from models.user import User
 from utils.responses import ApiResponses
+from validators.authentication import authenticated
 from validators.validators import ApiValidators
 
 register = Blueprint("register", __name__)
 
 
 @register.route("/api/v1/register", methods=["GET"])
+@authenticated
 def get():
-    # Logged in:
     queryStringtaxId = request.args.get("taxId")
-    queryStringemail = request.args.get("email")
     taxId, errors = ApiValidators.validateTaxId(queryStringtaxId)
 
     if len(errors) > 0:
@@ -24,6 +24,7 @@ def get():
 
 
 @register.route("/api/v1/register", methods=["POST"])
+@authenticated
 def post():
     taxId = request.json.get("taxId")
     password = request.json.get("password")
