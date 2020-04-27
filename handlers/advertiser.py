@@ -7,8 +7,8 @@ from validators.validators import ApiValidators
 advertiser = Blueprint("advertiser", __name__)
 
 
-@authenticated
 @advertiser.route("/api/v1/advertiser", methods=["GET"])
+@authenticated
 def get():
     queryStringTaxId = request.args.get("taxId")
     queryStringEmail = request.args.get("email")
@@ -36,8 +36,9 @@ def get():
         advertisers = Advertiser.scanAll()
         return ApiResponses.successMessage(item=advertisers)
 
-@authenticated
+
 @advertiser.route("/api/v1/advertiser", methods=["POST"])
+@authenticated
 def post():
 
     fullName = request.json["fullName"]
@@ -68,8 +69,8 @@ def post():
         return ApiResponses.badRequestMessage("{}".format(error))
 
 
-@authenticated
 @advertiser.route("/api/v1/advertiser", methods=["PATCH"])
+@authenticated
 def patch():
     items = {}
     allowedKeys = ["taxId", "fullName", "companyName", "phoneNumber"]
@@ -86,8 +87,9 @@ def patch():
 
     Advertiser.updateItem(**items)
 
-@authenticated
+
 @advertiser.route("/api/v1/advertiser", methods=["DELETE"])
+@authenticated
 def delete():
     queryStringTaxId = request.args.get("taxId")
     queryStringEmail = request.args.get("email")
