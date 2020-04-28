@@ -1,8 +1,8 @@
 from flask import request, Blueprint, session
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager
 from models.user import User
 from utils.responses import ApiResponses
-from validators.authentication import authenticated, validCredentials
+from validators.authentication import authenticated, validCredentials, allowedUser, validateUser
 from validators.validators import ApiValidators
 
 login = Blueprint("login", __name__)
@@ -11,6 +11,7 @@ login_manager = LoginManager()
 
 @login.route("/api/v1/login", methods=["GET"])
 @authenticated
+@allowedUser
 def get():
     queryStringtaxId = request.args.get("taxId")
 
@@ -18,12 +19,12 @@ def get():
 
     if len(errors) > 0:
         return ApiResponses.badRequestMessage(errors)
-    try:
-        user = User.queryUserByTaxId(taxId)
 
+    try:
+        user = validateUser(taxId)
         return ApiResponses.successMessage(item="Usuário {} logado".format(user.fullName))
-    except Exception as error:
-        return ApiResponses.badRequestMessage("Não foi possível verificar usuário logado, {}".format(error))
+    except:
+        return ApiResponses.badRequestMessage("Usuário inválido!")
 
 
 @login.route("/api/v1/login", methods=["POST"])
@@ -39,16 +40,11 @@ def post():
     if len(errors) > 0:
         return ApiResponses.badRequestMessage(errors)
 
-    user = User.queryUserByTaxId(taxId)
-
-    if not user:
-        return ApiResponses.badRequestMessage("Usuário {} inválido!".format(taxId))
-
-    if taxId != user.taxId:
-        return ApiResponses.badRequestMessage("Usuário {} não encontrado!".format(taxId))
+    user = validateUser(taxId)
 
     if validCredentials(user, taxId, password):
         session["loggedin"] = True
+        session["user"] = User.json(user)
         return ApiResponses.successMessage(item="Usuário {} logado com sucesso".format(taxId))
 
     return ApiResponses.badRequestMessage("Senha incorreta!")
