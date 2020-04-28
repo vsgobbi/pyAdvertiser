@@ -9,6 +9,10 @@ def validCredentials(user, taxId, password):
     return user.taxId == taxId and password == ApiKms.decrypt(user.passwordHash)
 
 
+def validLoggedUser(taxId):
+    return session.get("user")["taxId"] == taxId
+
+
 def validateUser(taxId):
     user = User.queryUserByTaxId(taxId)
 
@@ -35,7 +39,6 @@ def allowedUser(func):
     @wraps(wrapped=func)
     def wrapper(*args, **kwargs):
         wrapper.bla = "bla bla"
-        print(session.get("user"))
         user = session.get("user")
         if not user:
             return ApiResponses.notFoundMessage(message="Usuário não encontrado")
