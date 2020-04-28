@@ -99,6 +99,23 @@ class ApiValidators(object):
         return taxId, errors
 
     @classmethod
+    def validatePermissions(cls, permissions):
+        errors = []
+
+        if not permissions:
+            errors.append("Campo tags inválido, deve ser do tipo lista. "
+                          "Exemplo: ['moda', 'beleza', 'salao', 'servico']")
+
+        if permissions and not isinstance(permissions, list):
+            errors.append("Campo permissions inválido, deve ser do tipo lista. "
+                          "Exemplo: ['owner', 'viewer'] ou ['owner']")
+
+        if permissions and (len(permissions) < 1 or len(permissions) > 2):
+            errors.append("Campo permissions inválido, deve contar no mínimo 1 e máximo 2 permissões diferentes")
+
+        return permissions, errors
+
+    @classmethod
     def validateEmail(cls, email):
         errors = []
         if not email:
