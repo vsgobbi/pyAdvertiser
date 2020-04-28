@@ -1,6 +1,6 @@
 from uuid import uuid4
 from pynamodb.models import Model
-from pynamodb.attributes import UTCDateTimeAttribute, UnicodeAttribute
+from pynamodb.attributes import UTCDateTimeAttribute, UnicodeAttribute, UnicodeSetAttribute
 from datetime import datetime
 from utils.configs import region
 from utils.kms import ApiKms
@@ -14,6 +14,7 @@ class User(Model):
 
     fullName = UnicodeAttribute(null=False)
     phoneNumber = UnicodeAttribute(null=False)
+    permissions = UnicodeSetAttribute(null=True, default=["owner"])
     passwordHash = UnicodeAttribute(null=False)
     taxId = UnicodeAttribute(null=False, hash_key=True,)
     id = UnicodeAttribute(null=False, default_for_new=str(uuid4())[:16])
@@ -22,13 +23,14 @@ class User(Model):
     updated = UTCDateTimeAttribute(null=True)
 
     @classmethod
-    def newItem(cls, fullName, password, taxId, email, phoneNumber):
+    def newItem(cls, fullName, password, taxId, email, phoneNumber, permissions=None):
         user = User(
             fullName=fullName,
             passwordHash=ApiKms.encrypt(password),
             taxId=taxId,
             phoneNumber=phoneNumber,
             email=email,
+            permissions=permissions
         )
         return user.save()
 
@@ -40,10 +42,12 @@ class User(Model):
         )
         user.refresh()
         user.update(actions=[
-            User.fullName.set(kwargs.get("fullName")) or User.fullName,
-            User.phoneNumber.set(kwargs.get("phoneNumber")) or User.phoneNumber,
+            User.fullName.set(kwargs.get("fullName") if kwargs.get("fullName") else user.fullName),
+            User.phoneNumber.set(kwargs.get("phoneNumber") if kwargs.get("phoneNumber") else user.phoneNumber),
+            User.permissions.set(kwargs.get("permissions") if kwargs.get("permissions") else user.permissions),
             User.updated.set(datetime.now())
         ])
+        return user
 
     @classmethod
     def deleteItem(cls, taxId, email):
@@ -107,4 +111,6 @@ class User(Model):
             "email": user.email,
             "phoneNumber": user.phoneNumber,
             "created": user.created.strftime("%Y-%m-%d"),
+            "permissions": list(user.permissions),
+            "updated": user.updated.strftime("%Y-%m-%d")
         }
