@@ -25,3 +25,7 @@ class ApiResponses(object):
     @classmethod
     def notFoundMessage(cls, message):
         return jsonify({"erro": message}), 404
+
+    @classmethod
+    def forbiddenMessage(cls, message):
+        return jsonify({"acesso negado": message}), 401
