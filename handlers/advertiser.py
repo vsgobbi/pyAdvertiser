@@ -56,15 +56,17 @@ def post():
         return ApiResponses.badRequestMessage(errors)
 
     try:
-        advertiser = Advertiser.newItem(
+        Advertiser.newItem(
             fullName=fullName,
             companyName=companyName,
             taxId=taxId,
             email=email,
             phoneNumber=phoneNumber
         )
-        return ApiResponses.successMessage(message="sucesso", item="Empresa '{}' foi registrada".format(companyName))
-
+        return ApiResponses.successMessage(
+            message="sucesso",
+            item="Empresa '{}' foi registrada".format(companyName)
+        )
     except Exception as error:
         return ApiResponses.badRequestMessage("{}".format(error))
 
@@ -85,7 +87,14 @@ def patch():
         if key in allowedKeys:
             items.update({request.json.keys: request.json[key]})
 
-    Advertiser.updateItem(**items)
+    try:
+        Advertiser.updateItem(**items)
+        return ApiResponses.successMessage(
+            message="sucesso",
+            item="Empresa '{}' foi atualizada".format(companyName)
+        )
+    except Exception as error:
+        return ApiResponses.badRequestMessage("{}".format(error))
 
 
 @advertiser.route("/api/v1/advertiser", methods=["DELETE"])
